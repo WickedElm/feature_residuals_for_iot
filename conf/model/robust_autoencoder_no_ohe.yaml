@@ -1,0 +1,10 @@
+_target_: models.robust_autoencoder_no_ohe.RobustAutoencoderNoOHE
+_convert_: all
+
+# Parameters
+in_dims: 29
+layer_dims: [22, 15, 8]
+results_dir: './'
+lr: 1e-4
+lambda_filter: 0.01
+dropout_rate: 0.5

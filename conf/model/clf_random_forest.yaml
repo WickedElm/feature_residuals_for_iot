@@ -1,0 +1,6 @@
+_target_: models.clf_random_forest.ClfRandomForest
+_convert_: all
+
+# Parameters
+class_weight:
+max_features: auto

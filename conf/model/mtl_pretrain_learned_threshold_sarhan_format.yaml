@@ -1,0 +1,17 @@
+_target_: models.mtl_pretrain_learned_threshold_sarhan_format.MtlPretrainLearnedThresholdSarhanFormat
+_convert_: all
+
+# Parameters
+in_dims: 35 
+num_layers: 6
+feature_transformer: s_feature_transformer.SFeatureTransformer
+threshold_name: no_threshold
+clf_input_type: X 
+pretraining_epochs: 500
+results_dir: ./
+lr: 1.0 
+clf_adadelta_lr: 0.001
+tuning_lr: 0.001
+lambda_filter: 1.0
+dropout_rate: 0.0
+in_hidden_dim: 12

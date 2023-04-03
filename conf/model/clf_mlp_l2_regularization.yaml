@@ -1,0 +1,10 @@
+_target_: models.clf_mlp_l2_regularization.ClfMlpL2Regularization
+_convert_: all
+
+# Parameters
+in_dims: 35
+feature_transformer: s_feature_transformer.SFeatureTransformer
+results_dir: ./
+experiment: default
+lr: 1e-4
+l2: 0.4

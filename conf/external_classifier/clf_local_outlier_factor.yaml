@@ -1,0 +1,14 @@
+_target_: models.clf_local_outlier_factor.ClfLocalOutlierFactor
+
+results_dir: ./
+sklearn_model:
+  _target_: sklearn.neighbors.LocalOutlierFactor
+  n_neighbors: 20
+  algorithm: auto
+  leaf_size: 30
+  metric: minkowski
+  p: 2
+  metric_params:
+  contamination: auto
+  novelty: True
+  n_jobs: -1

@@ -1,0 +1,18 @@
+_target_: models.mtl_pretrain_lstm_clf.MtlPretrainLstmClf
+_convert_: all
+
+# Parameters
+in_dims: 35
+clf_input_type: X
+pretraining_epochs: 500
+results_dir: ./
+ae_lr: 1.0
+lstm_lr: 0.001
+in_hidden_dim: 12
+lstm_hidden_size: 10
+use_pretrained_ae: False
+pretrained_model_fullclassname: mtl_pretrain_lstm_clf.MtlPretrainLstmClf
+model_search_path: .
+root_dir: /home/lew/Documents/school/research/research_code
+lstm_num_layers: 1
+lstm_dropout: 0.0

@@ -1,0 +1,34 @@
+defaults:
+  - _self_
+  - model: mtl_pretrain_rnn_clf
+  - data_module: netflow_time_series_data_module
+  - external_classifier:
+
+hydra:
+  run:
+    dir: ./outputs/${general.project}/${general.experiment}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+
+general:
+  check_val_every_n_epoch: 25
+  project: testing
+  checkpoint_dir: output
+  experiment: default-experiment
+  autoencoder_path:
+  feature_type: original
+  clf_model:
+  feature_transformer: original_feature_transformer.OriginalFeatureTransformer
+  num_epochs: 10000
+  list: False
+  early_stopping_error: 1e-7
+  n_neighbors: 10
+  sklearn: False
+  l2: 0.4
+  clf_epochs: 500
+  rf_max_features: auto
+  s_threshold: 0.01
+  group: lewbug
+  weight_multiplier: 1.0
+  oversampling_multiplier: 1.0
+  tuning_criteria: attack
+  continue_training: True
+  train_external_model: False

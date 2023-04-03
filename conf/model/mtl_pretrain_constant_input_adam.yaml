@@ -1,0 +1,14 @@
+_target_: models.mtl_pretrain_constant_input_adam.MtlPretrainConstantInputAdam
+_convert_: all
+
+# Parameters
+in_dims: 35 
+feature_transformer: s_feature_transformer.SFeatureTransformer
+threshold_name: no_threshold
+clf_input_type: X 
+pretraining_epochs: 500
+results_dir: ./
+lr: 1.0 
+clf_adadelta_lr: 0.001
+tuning_lr: 0.001
+in_hidden_dim: 12

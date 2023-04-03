@@ -1,0 +1,12 @@
+_target_: data_modules.netflow_random_sample_time_series_data_module.NetflowRandomSampleTimeSeriesDataModule
+_convert_: all
+
+# Parameters
+data_path: ./
+batch_size: 32 
+total_rows_threshold: 500000 
+load_from_disk: False 
+load_data_path: tmp_ds_data 
+prefix: ''
+reserve_type: 'ae_tuning'
+time_series_sequence_length: 50

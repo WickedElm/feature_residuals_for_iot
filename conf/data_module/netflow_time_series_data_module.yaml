@@ -1,0 +1,18 @@
+_target_: data_modules.netflow_time_series_data_module.NetflowTimeSeriesDataModule
+_convert_: all
+
+# Parameters
+experiment: lewbug
+data_path: ./
+batch_size: 128
+total_rows_threshold: 1000000
+number_training_samples: 500000
+number_validation_samples: 250000
+number_test_samples: 250000
+number_to_skip: 0
+load_from_disk: True
+load_data_path: tmp_ds_data
+prefix: ''
+save_prefix: ''
+reserve_type: ae_tuning
+time_series_sequence_length: 16

@@ -1,0 +1,15 @@
+_target_: models.clf_one_class_svm.ClfOneClassSVM
+
+results_dir: ./
+sklearn_model:
+  _target_: sklearn.svm.OneClassSVM
+  kernel: rbf
+  degree: 3
+  gamma: scale
+  coef0: 0.0
+  tol: 1e-3
+  nu: 0.5
+  shrinking: True
+  cache_size: 2000
+  verbose: False
+  max_iter: -1

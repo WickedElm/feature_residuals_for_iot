@@ -1,0 +1,9 @@
+_target_: models.robust_autoencoder_layers.RobustAutoencoderLayers
+_convert_: all
+
+# Parameters
+in_dims: 29
+layer_dims: [25, 20, 15, 10]
+results_dir: './'
+lr: 1e-4
+lambda_filter: 0.01

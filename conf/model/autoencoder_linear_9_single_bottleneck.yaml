@@ -1,0 +1,9 @@
+_target_: models.autoencoder_linear_9_single_bottleneck.AutoencoderLinear9SingleBottleneck
+_convert_: all
+
+# Parameters
+in_dims: 29
+results_dir: './'
+lr: 1e-4
+dropout_rate: 0.5
+in_hidden_dim: 15

@@ -1,0 +1,6 @@
+_target_: models.dummy_model.DummyModel
+_convert_: all
+
+# Parameters
+results_dir: ./
+lr: 0.0001

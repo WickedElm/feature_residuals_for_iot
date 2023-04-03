@@ -1,0 +1,13 @@
+_target_: models.clf_isolation_forest.ClfIsolationForest
+
+results_dir: ./
+sklearn_model:
+  _target_: sklearn.ensemble.IsolationForest
+  n_estimators: 100
+  max_samples: auto
+  contamination: auto
+  max_features: 1.0
+  bootstrap: False
+  random_state:
+  verbose: 0
+  warm_start: False

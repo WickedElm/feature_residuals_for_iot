@@ -1,0 +1,9 @@
+_target_: models.autoencoder_linear.AutoencoderLinear
+_convert_: all
+
+# Parameters
+in_dims: 29
+layer_dims: [25, 20, 15]
+results_dir: './'
+lr: 1e-4
+dropout_rate: 0.5

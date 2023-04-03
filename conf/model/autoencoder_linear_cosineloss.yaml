@@ -1,0 +1,7 @@
+_target_: models.autoencoder_linear_cosineloss.AutoencoderLinearCosineLoss
+_convert_: all
+
+# Parameters
+in_dims: 29
+layer_dims: [20, 15,  10]
+lr: 1e-4

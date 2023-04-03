@@ -1,0 +1,11 @@
+_target_: models.clf_mlp_weighted.ClfMlpWeighted
+_convert_: all
+
+# Parameters
+in_dims: 35
+layer_dims: [25, 20, 15]
+feature_transformer: s_feature_transformer.SFeatureTransformer
+results_dir: ./
+experiment: default
+lr: 1e-4
+dropout_rate: 0.6

@@ -1,0 +1,6 @@
+_target_: models.clf_reconstruction_error_threshold.ClfReconstructionErrorThreshold
+_convert_: all
+
+# Parameters
+class_weight:
+threshold: 0.001

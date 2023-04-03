@@ -1,0 +1,6 @@
+_target_: models.clf_knn.ClfKNN
+_convert_: all
+
+# Parameters
+n_neighbors: 5
+class_weight:

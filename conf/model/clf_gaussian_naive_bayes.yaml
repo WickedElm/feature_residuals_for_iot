@@ -1,0 +1,6 @@
+_target_: models.clf_gaussian_naive_bayes.ClfGaussianNaiveBayes
+_convert_: all
+
+# Parameters
+class_weight:
+max_features: auto

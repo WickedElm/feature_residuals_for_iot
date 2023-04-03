@@ -1,0 +1,16 @@
+_target_: models.mtl_pretrain_sarhan_format.MtlPretrainSarhanFormat
+_convert_: all
+
+# Parameters
+in_dims: 39 
+num_layers: 6
+clf_input_type: X 
+pretraining_epochs: 500
+results_dir: ./
+lr: 1.0 
+clf_adadelta_lr: 0.001
+in_hidden_dim: 12
+use_pretrained_ae: False
+pretrained_model_fullclassname: mtl_pretrain_sarhan_format.MtlPretrainSarhanFormat
+root_dir: /home/lew/Documents/school/research/research_code
+model_search_path: .
