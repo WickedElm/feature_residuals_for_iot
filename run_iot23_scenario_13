@@ -1,0 +1,220 @@
+#!/usr/bin/env bash
+
+cd `dirname $0`
+
+tmp_dir=./tmp_ds_data
+output_dir=./output
+base_download_url="https://github.com/WickedElm/feature_residuals_for_iot/releases/download/v1.0.0"
+
+# Create data directory if needed
+if [ ! -d ${tmp_dir} ];
+then
+    echo "Data directory not found.  Executing ./download_data"
+    ./download_data
+fi
+
+if [ ! -d ${output_dir} ];
+then
+    mkdir ${output_dir}
+    chmod 755 ${output_dir}
+fi
+
+###
+# IoT23 Scenario 1
+###
+training_file=conference_iot_sf_scenario_13_ae_tuning_train.pkl
+validation_file=conference_iot_sf_scenario_13_ae_tuning_validation.pkl
+test_file=conference_iot_sf_scenario_13_ae_tuning_test.pkl
+
+save_prefix="sf_scenario_13"
+dataset="sf_scenario_13"
+dataset_path=`pwd`/datasets/iot23/sf_scenario_13/sf_scenario_13.pkl
+
+# Get date for results  dir
+cdate=$(date +%Y%m%d)
+cseconds=$(date +%s%N)
+timestamp=${cdate}_${cseconds}
+epochs="500"
+pretraining_epochs="500"
+clf_input_types="X L S XS LS XLS"
+lambda_filter=0.0 # Not used for this model
+tuning_lr=0.001 # Not used for this model
+clf_adadelta_lr=0.001
+main_experiment="one_class"
+
+contaminations="0.1 0.2 0.3 0.4 0.5"
+n_neighbors="30 40 50 100 500 1000"
+kernels="linear poly rbf sigmoid"
+
+###
+# Isolation Forest
+###
+
+for clf_input_type in `echo ${clf_input_types}`; do
+    project=${timestamp}_${save_prefix}_${clf_input_type}
+
+    experiment="${main_experiment}_${epochs}_${clf_input_type}_if_default"
+    python lightning_train_validate.py \
+        general.project=${project} \
+        general.experiment=${experiment} \
+        general.num_epochs=${epochs} \
+        general.check_val_every_n_epoch=10 \
+        general.train_external_model=True \
+        general.continue_training=False \
+        model=mtl_pretrain_clf \
+        model.pretraining_epochs=${pretraining_epochs} \
+        model.use_pretrained_ae=False \
+        model.clf_input_type=${clf_input_type} \
+        data_module=netflow_conference_data_module \
+        data_module.data_path=${dataset_path} \
+        data_module.prefix=conference_iot \
+        data_module.reserve_type=ae_tuning \
+        data_module.load_from_disk=True \
+        external_classifier=clf_isolation_forest
+
+    for contamination in `echo ${contaminations}`; do
+        experiment="${main_experiment}_${epochs}_${clf_input_type}_if_contamination_${contamination}"
+
+        python lightning_train_validate.py \
+            general.project=${project} \
+            general.experiment=${experiment} \
+            general.num_epochs=${epochs} \
+            general.check_val_every_n_epoch=10 \
+            general.train_external_model=True \
+            general.continue_training=False \
+            model=mtl_pretrain_clf \
+            model.pretraining_epochs=${pretraining_epochs} \
+            model.use_pretrained_ae=False \
+            model.clf_input_type=${clf_input_type} \
+            data_module=netflow_conference_data_module \
+            data_module.data_path=${dataset_path} \
+            data_module.prefix=conference_iot \
+            data_module.reserve_type=ae_tuning \
+            data_module.load_from_disk=True \
+            external_classifier=clf_isolation_forest \
+            external_classifier.sklearn_model.contamination=${contamination}
+    done
+done
+
+###
+# Local Outlier Factor
+###
+
+for clf_input_type in `echo ${clf_input_types}`; do
+    project=${timestamp}_${save_prefix}_${clf_input_type}
+
+    experiment="${main_experiment}_${epochs}_${clf_input_type}_lof_default"
+    python lightning_train_validate.py \
+        general.project=${project} \
+        general.experiment=${experiment} \
+        general.num_epochs=${epochs} \
+        general.check_val_every_n_epoch=10 \
+        general.train_external_model=True \
+        general.continue_training=False \
+        model=mtl_pretrain_clf \
+        model.pretraining_epochs=${pretraining_epochs} \
+        model.use_pretrained_ae=False \
+        model.clf_input_type=${clf_input_type} \
+        data_module=netflow_conference_data_module \
+        data_module.data_path=${dataset_path} \
+        data_module.prefix=conference_iot \
+        data_module.reserve_type=ae_tuning \
+        data_module.load_from_disk=True \
+        external_classifier=clf_local_outlier_factor
+
+    for contamination in `echo ${contaminations}`; do
+        experiment="${main_experiment}_${epochs}_${clf_input_type}_lof_contamination_${contamination}"
+
+        python lightning_train_validate.py \
+            general.project=${project} \
+            general.experiment=${experiment} \
+            general.num_epochs=${epochs} \
+            general.check_val_every_n_epoch=10 \
+            general.train_external_model=True \
+            general.continue_training=False \
+            model=mtl_pretrain_clf \
+            model.pretraining_epochs=${pretraining_epochs} \
+            model.use_pretrained_ae=False \
+            model.clf_input_type=${clf_input_type} \
+            data_module=netflow_conference_data_module \
+            data_module.data_path=${dataset_path} \
+            data_module.prefix=conference_iot \
+            data_module.reserve_type=ae_tuning \
+            data_module.load_from_disk=True \
+            external_classifier=clf_local_outlier_factor \
+            external_classifier.sklearn_model.contamination=${contamination}
+    done
+
+    for n_neighbor in `echo ${n_neighbors}`; do
+        experiment="${main_experiment}_${epochs}_${clf_input_type}_lof_neighbors_${n_neighbor}"
+
+        python lightning_train_validate.py \
+            general.project=${project} \
+            general.experiment=${experiment} \
+            general.num_epochs=${epochs} \
+            general.check_val_every_n_epoch=10 \
+            general.train_external_model=True \
+            general.continue_training=False \
+            model=mtl_pretrain_clf \
+            model.pretraining_epochs=${pretraining_epochs} \
+            model.use_pretrained_ae=False \
+            model.clf_input_type=${clf_input_type} \
+            data_module=netflow_conference_data_module \
+            data_module.data_path=${dataset_path} \
+            data_module.prefix=conference_iot \
+            data_module.reserve_type=ae_tuning \
+            data_module.load_from_disk=True \
+            external_classifier=clf_local_outlier_factor \
+            external_classifier.sklearn_model.n_neighbors=${n_neighbor}
+    done
+done
+
+###
+# One Class SVM
+###
+
+for clf_input_type in `echo ${clf_input_types}`; do
+    project=${timestamp}_${save_prefix}_${clf_input_type}
+
+    experiment="${main_experiment}_${epochs}_${clf_input_type}_ocsvm_default"
+    python lightning_train_validate.py \
+        general.project=${project} \
+        general.experiment=${experiment} \
+        general.num_epochs=${epochs} \
+        general.check_val_every_n_epoch=10 \
+        general.train_external_model=True \
+        general.continue_training=False \
+        model=mtl_pretrain_clf \
+        model.pretraining_epochs=${pretraining_epochs} \
+        model.use_pretrained_ae=False \
+        model.clf_input_type=${clf_input_type} \
+        data_module=netflow_conference_data_module \
+        data_module.data_path=${dataset_path} \
+        data_module.prefix=conference_iot \
+        data_module.reserve_type=ae_tuning \
+        data_module.load_from_disk=True \
+        external_classifier=clf_one_class_svm
+
+    for kernel in `echo ${kernels}`; do
+        experiment="${main_experiment}_${epochs}_${clf_input_type}_ocsvm_kernel_${kernel}"
+
+        python lightning_train_validate.py \
+            general.project=${project} \
+            general.experiment=${experiment} \
+            general.num_epochs=${epochs} \
+            general.check_val_every_n_epoch=10 \
+            general.train_external_model=True \
+            general.continue_training=False \
+            model=mtl_pretrain_clf \
+            model.pretraining_epochs=${pretraining_epochs} \
+            model.use_pretrained_ae=False \
+            model.clf_input_type=${clf_input_type} \
+            data_module=netflow_conference_data_module \
+            data_module.data_path=${dataset_path} \
+            data_module.prefix=conference_iot \
+            data_module.reserve_type=ae_tuning \
+            data_module.load_from_disk=True \
+            external_classifier=clf_one_class_svm \
+            external_classifier.sklearn_model.kernel=${kernel}
+    done
+done

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+cd `dirname $0`
+
+# Download data (only needs to be done once)
+./download_data
+
+# Execute a single experiment of each dataset
+# - Note that the paper performs 10 experiments and takes the mean of their performance
+./run_ton_iot
+./run_bot_iot
+./run_ton_iot_simple
+./run_iot23_scenario_1
+./run_iot23_scenario_13
+./run_iot23_scenario_19
+./run_iot23_scenario_20
